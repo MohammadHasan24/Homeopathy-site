@@ -11,6 +11,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Calendar, ChevronLeft, ChevronRight } from "lucide-react";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
 import { SLIDES } from "@/lib/data";
@@ -31,16 +32,22 @@ export default function HeroCarousel() {
     // as "full screen" without fighting the sticky header, capped with a
     // max-h so it doesn't get absurdly tall on very large monitors.
     <section className="relative overflow-hidden min-h-[80vh] max-h-[860px] flex items-center">
-      {/* 4 background photo placeholders, stacked on top of each other.
-          Only the active one is visible (opacity-100); the rest fade out.
-          Swap each ImagePlaceholder for a real photo (one per topic) when
-          ready - see the comment inside ImagePlaceholder for how. */}
+      {/* 4 background images, stacked on top of each other.
+          Only the active one is visible (opacity-100); the rest fade out. */}
       {SLIDES.map((s, i) => (
         <div
           key={s.title}
-          className={`absolute inset-0 z-0 transition-opacity duration-1000 ${i === slide ? "opacity-100" : "opacity-0"}`}
+          className={`absolute inset-0 z-0 transition-opacity duration-1000 ${
+            i === slide ? "opacity-100" : "opacity-0"
+          }`}
         >
-          <ImagePlaceholder label="" className="w-full h-full border-0 rounded-none" />
+          <Image
+            src={`/hero${i + 1}.jpg`}
+            alt={s.title}
+            fill
+            priority={i === 0}
+            className="object-cover"
+          />
         </div>
       ))}
 
@@ -79,7 +86,10 @@ export default function HeroCarousel() {
         </div>
 
         {/* Rotating caption + controls, tied to the same 4 slides */}
-        <div className="animate-fade-up mt-14 flex flex-col items-center gap-4" style={{ animationDelay: "400ms" }}>
+        <div
+          className="animate-fade-up mt-14 flex flex-col items-center gap-4"
+          style={{ animationDelay: "400ms" }}
+        >
           <div className="inline-flex items-center gap-3 bg-[#F6EFE0]/10 border border-[#F6EFE0]/25 backdrop-blur-sm rounded-full px-5 py-3 text-[#F6EFE0]">
             <CurrentIcon size={18} />
             <span className="text-sm sm:text-base">
@@ -89,7 +99,9 @@ export default function HeroCarousel() {
 
           <div className="flex items-center gap-4">
             <button
-              onClick={() => setSlide((s) => (s - 1 + SLIDES.length) % SLIDES.length)}
+              onClick={() =>
+                setSlide((s) => (s - 1 + SLIDES.length) % SLIDES.length)
+              }
               className="bg-[#F6EFE0]/10 border border-[#F6EFE0]/25 text-[#F6EFE0] rounded-full p-2.5 hover:bg-[#F6EFE0]/20 transition-colors"
               aria-label="Previous"
             >
@@ -101,7 +113,9 @@ export default function HeroCarousel() {
                 <button
                   key={i}
                   onClick={() => setSlide(i)}
-                  className={`h-2 rounded-full transition-all ${i === slide ? "w-7 bg-[#F6EFE0]" : "w-2 bg-[#F6EFE0]/40"}`}
+                  className={`h-2 rounded-full transition-all ${
+                    i === slide ? "w-7 bg-[#F6EFE0]" : "w-2 bg-[#F6EFE0]/40"
+                  }`}
                   aria-label={`Go to slide ${i + 1}`}
                 />
               ))}
