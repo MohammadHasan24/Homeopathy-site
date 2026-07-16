@@ -1,0 +1,44 @@
+/* Loads Tailwind's base reset, component classes, and utility classes. */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Maps the font variables set in layout.jsx to simple utility classes
+   so components can just write className="font-display" or "font-body". */
+.font-display {
+  font-family: var(--font-display), serif;
+}
+
+.font-body {
+  font-family: var(--font-body), sans-serif;
+}
+
+/* Fade-up entrance animation, used for hero content on load and for cards/
+   text that animate in as you scroll (see components/Reveal.jsx). Combined
+   with an opacity/translate transition rather than a flashy effect, to keep
+   things feeling modern without looking gimmicky. */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.7s ease-out both;
+}
+
+/* Respect users who've asked their OS/browser to reduce motion - turns all
+   animations into instant, no-motion transitions instead of disabling the
+   content entirely. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  [class*="transition-"] {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
